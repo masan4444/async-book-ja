@@ -1,6 +1,7 @@
 [book]
-title = "Asynchronous Programming in Rust"
+title = "Asynchronous Programming in Rust 日本語版"
 authors = ["Taylor Cramer"]
+language = "ja"
 
 [build]
 create-missing = false
@@ -8,8 +9,8 @@ create-missing = false
 [preprocess.links]
 
 [output.html]
-git-repository-url = "https://github.com/rust-lang/async-book"
-site-url = "/async-book/"
+git-repository-url = "https://github.com/masan4444/async-book-ja"
+site-url = "/async-book-ja/"
 
 [output.linkcheck]
 follow-web-links = true
