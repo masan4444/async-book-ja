@@ -1,9 +1,18 @@
-# The State of Asynchronous Rust
+<!-- # The State of Asynchronous Rust -->
 
+# 非同期Rustの現状
+
+<!--
 Parts of async Rust are supported with the same stability guarantees as
 synchronous Rust. Other parts are still maturing and will change
 over time. With async Rust, you can expect:
+-->
 
+非同期Rustは、同期Rustと同様の安定性保証が一部サポートされています。
+その他の部分はまだ成熟中であり、時間の経過とともに変化していくでしょう。
+非同期Rustにおいて、予想されることは:
+
+<!--
 - Outstanding runtime performance for typical concurrent workloads.
 - More frequent interaction with advanced language features, such as lifetimes
   and pinning.
@@ -11,21 +20,46 @@ over time. With async Rust, you can expect:
   different async runtimes.
 - Higher maintenance burden, due to the ongoing evolution of async runtimes
   and language support.
+-->
 
+- 典型的な並行処理ワークロードに対する卓越したランタイム性能。
+
+- ライフタイムやピン留めといった高度な言語機能とのインタラクションをより頻繁に行うことができます。
+
+- 同期と非同期のコード間、および異なる非同期ランタイム間に一部互換性の制約があります。
+
+- 非同期ランタイムや言語サポートが進化し続けるため、メンテナンスの負担が大きいです。
+
+<!--
 In short, async Rust is more difficult to use and can result in a higher
 maintenance burden than synchronous Rust,
 but gives you best-in-class performance in return.
 All areas of async Rust are constantly improving,
 so the impact of these issues will wear off over time.
+-->
 
-## Language and library support
+つまり、非同期Rustは、同期Rustよりも扱いにくく、メンテナンスの負担も大きくなります。
+その代わり、最高クラスのパフォーマンスを得ることができます。
+非同期Rustは、すべての領域において、常に改善され続けています。
+そのため、これらの問題の影響は時間の経過とともに薄れていくでしょう。
 
+<!-- ## Language and library support -->
+
+## 言語・ライブラリの対応
+
+<!--
 While asynchronous programming is supported by Rust itself,
 most async applications depend on functionality provided
 by community crates.
 As such, you need to rely on a mixture of
 language features and library support:
+-->
 
+非同期プログラミングはRust自体でサポートされていますが、ほとんどの非同期アプリケーションは、
+コミュニティのクレートが提供する機能に依存しています。
+そのため、言語機能とライブラリのサポートを組み合わせて利用する必要があります:
+
+<!--
 - The most fundamental traits, types and functions, such as the
   [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) trait
   are provided by the standard library.
@@ -38,11 +72,31 @@ language features and library support:
   async crates, depend on a specific runtime. See
   ["The Async Ecosystem"](../08_ecosystem/00_chapter.md) section for more
   details.
+-->
 
+- [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html)トレイトのような
+  基本的なトレイト、型、関数は標準ライブラリで提供されています。
+
+- `async/await`構文は、Rustコンパイラで直接サポートされています。
+
+- 多くの有用な型、マクロ、関数が[`futures`](https://docs.rs/futures/)クレートによって提供されています。
+  これらは全ての非同期Rustアプリケーションで使用することができます。
+
+- 非同期コードの実行、I/O、タスクの起動は、Tokio や async-std のような
+  "非同期ランタイム" によって提供されます。
+  ほとんどの非同期アプリケーションといくつかの非同期クレートは、特定のランタイムに依存しています。
+  詳しくは["非同期エコシステム"](../08_ecosystem/00_chapter.md)の項をご覧ください。
+
+<!--
 Some language features you may be used to from synchronous Rust are not yet
 available in async Rust. Notably, Rust does not let you declare async
 functions in traits. Instead, you need to use workarounds to achieve the same
 result, which can be more verbose.
+-->
+
+同期Rustで使い慣れた言語機能の中には、非同期Rustではまだ利用できないものがあります。
+特筆すべき点として、トレイト内で非同期関数を宣言することができません。
+その代わりに、同じ結果を得るために回避策を使用する必要があり、より冗長になる可能性があります。
 
 ## Compiling and debugging
 
