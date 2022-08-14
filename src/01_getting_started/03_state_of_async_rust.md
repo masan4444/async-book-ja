@@ -10,7 +10,7 @@ over time. With async Rust, you can expect:
 
 非同期Rustは、同期Rustと同様の安定性保証が一部サポートされています。
 その他の部分はまだ成熟中であり、時間の経過とともに変化していくでしょう。
-非同期Rustにおいて、予想されることは:
+非同期Rustにおいて、現在予想できることは:
 
 <!--
 - Outstanding runtime performance for typical concurrent workloads.
@@ -24,7 +24,7 @@ over time. With async Rust, you can expect:
 
 - 典型的な並行処理ワークロードに対する卓越したランタイム性能。
 
-- ライフタイムやピン留めといった高度な言語機能とのインタラクションをより頻繁に行うことができます。
+- ライフタイムやピン留めといった高度な言語機能と頻繁に相互作用を引き起こします。
 
 - 同期と非同期のコード間、および異なる非同期ランタイム間に一部互換性の制約があります。
 
@@ -98,59 +98,122 @@ result, which can be more verbose.
 特筆すべき点として、トレイト内で非同期関数を宣言することができません。
 その代わりに、同じ結果を得るために回避策を使用する必要があり、より冗長になる可能性があります。
 
-## Compiling and debugging
+<!-- ## Compiling and debugging -->
 
+## コンパイルとデバッグ
+
+<!--
 For the most part, compiler- and runtime errors in async Rust work
 the same way as they have always done in Rust. There are a few
 noteworthy differences:
+-->
 
-### Compilation errors
+非同期Rustのコンパイラエラーとランタイムエラーは、
+ほとんどの場合、これまでのRustと同じように機能します。
+しかし、いくつか重要な違いがあります:
 
+<!-- ### Compilation errors -->
+
+### コンパイルエラー
+
+<!--
 Compilation errors in async Rust conform to the same high standards as
 synchronous Rust, but since async Rust often depends on more complex language
 features, such as lifetimes and pinning, you may encounter these types of
 errors more frequently.
+-->
 
-### Runtime errors
+非同期Rustのコンパイルエラーは、同期Rustに高い基準で準拠していますが、
+非同期Rustはライフタイムやピン留めなど、より複雑な言語機能に依存することが多いため、
+同期Rustに比べ、この種のエラーに遭遇することが多くなるかもしれません。
 
+<!-- ### Runtime errors -->
+
+### ランタイムエラー
+
+<!-- 
 Whenever the compiler encounters an async function, it generates a state
 machine under the hood. Stack traces in async Rust typically contain details
 from these state machines, as well as function calls from
 the runtime. As such, interpreting stack traces can be a bit more involved than
 it would be in synchronous Rust.
+-->
 
-### New failure modes
+コンパイラが非同期関数をコンパイルする際、必ず内部にステートマシンを生成します。
+非同期Rustのスタックトレースには、通常、これらのステートマシンの詳細とランタイムの関数呼び出しが含まれます。
+そのため、スタックトレースを読み解くのは、同期Rustの場合よりも少し困難になる可能性があります。
 
+<!-- ### New failure modes -->
+
+### 新規の故障モード（`訳注`: 起こりうるエラーのパターン）
+
+<!--
 A few novel failure modes are possible in async Rust, for instance
 if you call a blocking function from an async context or if you implement
 the `Future` trait incorrectly. Such errors can silently pass both the
 compiler and sometimes even unit tests. Having a firm understanding
 of the underlying concepts, which this book aims to give you, can help you
 avoid these pitfalls.
+-->
 
-## Compatibility considerations
+例えば、非同期コンテキストからブロッキング関数を呼び出したり、`Future`トレイトを誤って実装したりすると、
+同期Rustでは馴染みのない故障モードが発生する可能性があります。
+このようなエラーは、コンパイラや、時にはユニットテストさえも無言でパスしてしまいます。
+本書を通じて、基本的な考え方をしっかりと理解することで、こうした落とし穴を避けることができます
 
+<!-- ## Compatibility considerations -->
+
+## 互換性の考慮
+
+<!-- 
 Asynchronous and synchronous code cannot always be combined freely.
 For instance, you can't directly call an async function from a sync function.
 Sync and async code also tend to promote different design patterns, which can
 make it difficult to compose code intended for the different environments.
+-->
 
+非同期と同期のコードは、必ずしも自由に組み合わせることができません。
+例えば、同期関数から非同期関数を直接呼び出すことはできません。
+また、同期と非同期のコードで異なるデザインパターンを指向する傾向があり、
+異なる環境を想定したコードを構成することが困難な場合があります。
+
+<!--
 Even async code cannot always be combined freely. Some crates depend on a
 specific async runtime to function. If so, it is usually specified in the
 crate's dependency list.
+-->
 
+非同期コードであっても、常に自由に組み合わせることができるわけではありません。
+いくつかのクレートは、動作するために特定の非同期ランタイムに依存しています。
+その場合、依存しているランタイムは通常、クレートの依存関係リストで指定されています。
+
+<!--
 These compatibility issues can limit your options, so make sure to
 research which async runtime and what crates you may need early.
 Once you have settled in with a runtime, you won't have to worry
 much about compatibility.
+-->
 
-## Performance characteristics
+このような互換性の問題は、あなたの選択肢を狭めることになるので、
+どの非同期ランタイムとどのクレートが必要かを早めに調査しておくようにしましょう。
+一度どのランタイムを使用するか決まれば、互換性についてはあまり気にする必要はないでしょう。
 
+<!-- ## Performance characteristics -->
+
+## パフォーマンスの特徴
+
+<!--
 The performance of async Rust depends on the implementation of the
 async runtime you're using.
 Even though the runtimes that power async Rust applications are relatively new,
 they perform exceptionally well for most practical workloads.
+-->
 
+非同期Rustのパフォーマンスは、使用している非同期ランタイムの実装に依存します。
+非同期Rustのアプリケーションを動作させるランタイムは比較的新しいものですが、
+ほとんどの実用的なワークロードに対して並外れた優れた性能を発揮します。
+
+<!--
 That said, most of the async ecosystem assumes a _multi-threaded_ runtime.
 This makes it difficult to enjoy the theoretical performance benefits
 of single-threaded async applications, namely cheaper synchronization.
@@ -158,3 +221,12 @@ Another overlooked use-case is _latency sensitive tasks_, which are
 important for drivers, GUI applications and so on. Such tasks depend
 on runtime and/or OS support in order to be scheduled appropriately.
 You can expect better library support for these use cases in the future.
+-->
+
+とはいえ、非同期エコシステムのほとんどは、_マルチスレッド_ のランタイムを想定しています。
+このため、シングルスレッド非同期アプリケーションの、理論的なパフォーマンスメリットを享受することが難しくなっています。
+namely cheaper synchronization。
+もう一つ見落とされているユースケースは、ドライバやGUIアプリケーションなどで重要な、
+_遅延に影響を受けやすいタスク_ です。このようなタスクは、適切なスケジューリングが必要で、
+ランタイムやOSのサポートに依存しています。このようなユースケースに対するライブラリのサポートは、
+将来的に充実することが期待されています。
