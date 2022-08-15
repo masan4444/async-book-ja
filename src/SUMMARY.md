@@ -3,7 +3,7 @@
 - [はじめに](01_getting_started/01_chapter.md)
   - [なぜ非同期？](01_getting_started/02_why_async.md)
   - [非同期Rustの現状](01_getting_started/03_state_of_async_rust.md)
-  - [`async`/`.await` Primer](01_getting_started/04_async_await_primer.md)
+  - [`async`/`.await` 入門](01_getting_started/04_async_await_primer.md)
 - [Under the Hood: Executing `Future`s and Tasks](02_execution/01_chapter.md)
   - [The `Future` Trait](02_execution/02_future.md)
   - [Task Wakeups with `Waker`](02_execution/03_wakeups.md)
