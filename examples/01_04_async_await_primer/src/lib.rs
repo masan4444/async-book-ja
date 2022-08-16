@@ -4,9 +4,9 @@ use futures::executor::block_on;
 
 mod first {
 // ANCHOR: hello_world
-// `block_on` blocks the current thread until the provided future has run to
-// completion. Other executors provide more complex behavior, like scheduling
-// multiple futures onto the same thread.
+// `block_on` は、提供された Future が実行されるまで、現在のスレッドをブロックします。
+// 完了するまで現在のスレッドをブロックします。他の executers は、より複雑な動作を提供します。
+// 複数の futures を同じスレッドにスケジューリングするような、より複雑な動作を提供します。
 use futures::executor::block_on;
 
 async fn hello_world() {
@@ -14,8 +14,8 @@ async fn hello_world() {
 }
 
 fn main() {
-    let future = hello_world(); // Nothing is printed
-    block_on(future); // `future` is run and "hello, world!" is printed
+    let future = hello_world(); // 何も表示されない
+    block_on(future); // `future` が実行され、"hello, world!" が出力される
 }
 // ANCHOR_END: hello_world
 
@@ -46,9 +46,9 @@ mod third {
 use super::*;
 // ANCHOR: block_on_main
 async fn learn_and_sing() {
-    // Wait until the song has been learned before singing it.
-    // We use `.await` here rather than `block_on` to prevent blocking the
-    // thread, which makes it possible to `dance` at the same time.
+    // 歌を学ぶまで待ってから歌います。
+    // ここでは `block_on` ではなく `.await` を使用し、スレッドのブロックを防いでいます。
+    // スレッドをブロックしないようにするため、`.await` を使用しています。これにより、`dance` を同時に行うことができます。
     let song = learn_song().await;
     sing_song(song).await;
 }
@@ -57,11 +57,11 @@ async fn async_main() {
     let f1 = learn_and_sing();
     let f2 = dance();
 
-    // `join!` is like `.await` but can wait for multiple futures concurrently.
-    // If we're temporarily blocked in the `learn_and_sing` future, the `dance`
-    // future will take over the current thread. If `dance` becomes blocked,
-    // `learn_and_sing` can take back over. If both futures are blocked, then
-    // `async_main` is blocked and will yield to the executor.
+    // `join!` は `.await` のようなものだが、複数の futures を同時に待つことができます。
+    // `learn_and_sing` の future で一時的にブロックされた場合、 `dance` が現在のスレッドを引き継ぎます。
+    // もし `dance` がブロックされた場合、future が現在のスレッドを引き継ぎます。
+    // もし両方の未来がブロックされた場合、`learn_and_sing` が引き継ぐことができます。
+    // `async_main` がブロックされ、executor に引き継がれます。
     futures::join!(f1, f2);
 }
 
